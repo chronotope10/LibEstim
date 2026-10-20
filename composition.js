@@ -62,7 +62,8 @@ function render(){
   $('coverageNote').textContent=`0～9類とEの計${fmt(c.classified)}冊を100％として比較します。Eの${fmt(c.picture)}冊は9類（文学）に合算しています。分類不明${fmt(c.unknown)}冊は構成比の対象外です。${c.classified?'':'比較可能な資料がありません。'}`;
   $('ratioChart').innerHTML=c.counts.map((n,i)=>{
     const pct=c.classified?n/c.classified*100:0;
-    return `<div class="ratio-row"><strong>${i} ${i === 9 ? '文学（E含む）' : NDC_NAMES[i]}</strong><div class="ratio-track" role="img" aria-label="${i === 9 ? '文学（E含む）' : NDC_NAMES[i]}：現在${c.classified?pct.toFixed(1)+'%':'算出不可'}、標準${ratios[i]}%"><div class="ratio-fill" style="width:${pct}%"></div><div class="ratio-marker" style="left:${ratios[i]}%"></div></div><span>${c.classified?pct.toFixed(1)+'%':'—'}</span></div>`;
+    const tone=!c.classified ? '' : n*100 > ratios[i]*c.classified ? 'fresh' : n*200 <= ratios[i]*c.classified ? 'old' : 'aged';
+    return `<div class="ratio-row"><strong>${i} ${i === 9 ? '文学（E含む）' : NDC_NAMES[i]}</strong><div class="ratio-track" role="img" aria-label="${i === 9 ? '文学（E含む）' : NDC_NAMES[i]}：現在${c.classified?pct.toFixed(1)+'%':'算出不可'}、標準${ratios[i]}%"><div class="ratio-fill ${tone}" style="width:${pct}%"></div><div class="ratio-marker" style="left:${ratios[i]}%"></div></div><span>${c.classified?pct.toFixed(1)+'%':'—'}</span></div>`;
   }).join('');
   $('ratioRows').innerHTML=c.counts.map((n,i)=>{
     const pct=n/c.classified*100,diff=pct-ratios[i];
@@ -84,4 +85,5 @@ $('forgetSettings').addEventListener('click',()=>{
   catch{$('saveStatus').textContent='保存設定を削除できませんでした。ブラウザの設定を確認してください。';}
 });
 $('compositionPrint').addEventListener('click',()=>window.print());
+
 
