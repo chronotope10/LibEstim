@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="color-scheme" content="light"><title>学校図書館 蔵書構成診断</title><link rel="stylesheet" href="style.css"><link rel="stylesheet" href="composition.css"></head>
+<body class="composition-page">
+<header class="topbar"><div class="brand-mark" aria-hidden="true">▤</div><div><strong>学校図書館</strong><nav class="diagnosis-nav" aria-label="診断の切り替え"><a href="index.html">蔵書鮮度診断</a><a href="composition.html" aria-current="page">蔵書構成診断</a></nav></div><div class="topbar-right">CSVはこの端末の中だけで集計</div></header>
+<main class="shell">
+<section class="heading"><div><div class="eyebrow">COLLECTION BALANCE</div><h1>蔵書の冊数と、分野のバランスを見る。</h1><p>1校ずつ、文科省の図書標準と全国SLAの標準配分比率を確認します。</p></div></section>
+<section class="workspace" aria-label="蔵書構成の設定">
+<div class="upload" id="compositionDrop"><div class="upload-icon" aria-hidden="true">＋</div><div><strong>蔵書全体のCSVを選ぶ</strong><p>鮮度診断と同じCSV／TSVを使えます。ファイルをまとめて選択できます。</p></div><label class="upload-button" for="catalogFiles">ファイルを選択</label><input id="catalogFiles" type="file" accept=".csv,.tsv,text/csv,text/tab-separated-values" multiple hidden></div>
+<p id="loadStatus" role="status" aria-live="polite" class="file-list">ファイルはまだ選択されていません</p>
+<div class="composition-settings">
+<label>診断する学校<select id="compositionSchool" disabled><option>CSVを読み込んでください</option></select></label>
+<label>校種<select id="schoolType"><option value="">選択してください</option><option value="elementary">小学校</option><option value="junior">中学校</option><option value="high">高等学校</option></select></label>
+<label>学級数<input id="classCount" type="number" min="1" step="1" inputmode="numeric" placeholder="例：18"></label>
+</div><p id="saveStatus" class="footnote" role="status">校種と学級数は学校ごとにこのブラウザへ保存します。蔵書データは保存しません。</p>
+<button id="forgetSettings" class="subtle" type="button">この学校の保存設定を削除</button>
+<fieldset id="typeFilter" hidden><legend>図書として集計する資料種別</legend><p class="footnote">雑誌・DVDなどが含まれる場合はチェックを外してください。種別名からの自動判定は行いません。</p><div id="typeChoices" class="class-checks"></div></fieldset>
+<p id="validation" role="status" aria-live="polite"></p>
+</section>
+<section id="compositionResults" hidden aria-label="蔵書構成の診断結果">
+<div class="result-head"><div><h2 id="compositionTitle"></h2><p id="compositionContext"></p></div><button type="button" id="compositionPrint" class="subtle">印刷 / PDF保存</button></div>
+<div class="metrics" id="compositionMetrics"></div>
+<section class="card"><h3>文科省 学校図書館図書標準の達成状況</h3><p id="achievementText"></p><div id="achievementTrack" class="achievement-track"><div id="achievementFill"></div></div><p class="footnote">図書標準は公立義務教育諸学校の整備目標です。ここでは小学校・中学校の算式に対応しています。高等学校にはこの図書標準を適用しません。特別支援学校には未対応です。</p></section>
+<section class="card composition-card"><h3>分類別の蔵書構成と標準配分比率</h3><p class="footnote">全国SLA 学校図書館メディア基準（2021年4月1日改訂）の「蔵書の配分比率」と比較します。新聞・雑誌・電子メディアなどの基準全体を評価するものではありません。</p><p id="coverageNote"></p>
+<div class="ratio-legend"><span>■ 現在の割合</span><span>│ 標準の割合</span><span>各行の横軸は0～100％</span></div><div id="ratioChart"></div>
+<div class="table-scroll"><table class="ratio-table"><caption>分類別の冊数と配分比率</caption><thead><tr><th scope="col">分類</th><th scope="col">冊数</th><th scope="col">現在</th><th scope="col">標準</th><th scope="col">差</th></tr></thead><tbody id="ratioRows"></tbody></table></div>
+<p class="footnote">差は現在の割合－標準の割合（ポイント）です。標準は教育課程や地域の実情に応じて運用する目安です。多い分類の図書を減らす指示ではありません。</p></section>
+<section class="card composition-card"><h3>集計の内訳</h3><div id="compositionBreakdown"></div><p class="footnote">資料1行を1冊として集計し、同じ学校・資料番号の重複は除外します。この診断ではEを9類（文学）として合算します。分類不明の資料は冊数の達成率には含め、構成比からは除外します。全国SLAの基準自体は絵本・まんがも主題で分類するため、Eの文学への合算は本ツールの運用上の集計方法です。</p></section>
+</section>
+<section class="empty" id="compositionEmpty"><h2>蔵書CSVと学校の設定で診断できます</h2><p>必要な列は「請求記号」「出版年月」。出版年が空欄でも構成診断の冊数には含みます。</p></section>
+<p class="footnote">出典：<a href="https://www.mext.go.jp/a_menu/sports/dokusyo/hourei/cont_001/016.htm" target="_blank" rel="noopener">文部科学省 学校図書館図書標準</a> ／ <a href="https://www.j-sla.or.jp/pdfs/20210401mediakijun.pdf" target="_blank" rel="noopener">全国学校図書館協議会 学校図書館メディア基準</a></p>
+</main><script type="module" src="composition.js"></script></body></html>
+
